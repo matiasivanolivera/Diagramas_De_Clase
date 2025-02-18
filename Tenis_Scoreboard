@@ -1,0 +1,69 @@
+@startuml Tenis_Score_Board
+
+class Player
+class Match {
+  +type : matchType
+  +setFormat : setType
+  +currentServer : Player
+  +currentReturner : Player
+}
+
+enum MatchType {
+  singles
+  doubles
+}
+
+class Scoreboard
+enum SetType {
+  best of 3 set
+  best of 5 set
+}
+
+class Set  {
+  +setFormat : int
+}
+class Game
+enum RegularPoint {
+  0
+  15
+  30
+  40
+  deuce
+  adventage
+}
+
+class TiebreakPoint
+
+class MatchPoint
+class SetPoint
+abstract class Point
+
+
+Match *--> "2" Player
+Match o--> Scoreboard
+Match o--> MatchPoint
+/'Point <|-- MatchPoint'/
+MatchPoint ..> RegularPoint
+MatchPoint ..> TiebreakPoint
+
+Scoreboard *--> Set
+Scoreboard *--> "2" Player
+Set *--> "6" Game : consists of
+Set o--> Tiebreak
+Set o--> SetPoint
+'Point <|-- SetPoint
+SetPoint ..> RegularPoint
+SetPoint ..> TiebreakPoint
+
+Game -- Tiebreak
+
+Game *--> RegularPoint
+'Point <|-- GamePoint
+
+Point <|-- RegularPoint
+Point <|-- TiebreakPoint
+Tiebreak *--> "7..n" TiebreakPoint
+
+
+
+@enduml
